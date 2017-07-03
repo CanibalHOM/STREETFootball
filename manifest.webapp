@@ -1,7 +1,7 @@
 {
   "version": "1.0",
-  "name": "STRFOOT",
-  "description": "STRFOOT",
+  "name": "streerfootball",
+  "description": "streerfootball",
   "launch_path": "/index.html",
   "icons": {
     "128": "/res/icon.png"

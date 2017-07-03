@@ -27,6 +27,7 @@ var mainMenuUI = cc.Layer.extend({
 		var menuLogo 			= new cc.MenuItemSprite(imageLogo);  
 		
 		var menuStart 			= new cc.MenuItemFont("Play",this.startGame,this);
+		/*
 		var menuNameTextField 	= new cc.EditBox(cc.size(150, 40),cc.Scale9Sprite.create(res.editbox_png));
 		
 		menuNameTextField.setPlaceHolder("Input NickName");
@@ -39,7 +40,7 @@ var mainMenuUI = cc.Layer.extend({
             y: size.height / 2
         });
 		//var menuOption = new cc.MenuItemFont("Option");
-		this.addChild(menuNameTextField);
+		this.addChild(menuNameTextField);*/
 		
 		var menu = new cc.Menu(menuLogo,menuStart);
 		
