@@ -44,6 +44,14 @@ var Game = function() {
 	this.maxPlayers 	= 10;	
 }  
 
+var OutputData = function(id, x, y, action) {
+	this.id 		= id;
+	this.x 			= x;	
+	this.y 			= y;
+	this.action 	= action;	
+}  
+
+
 Game.prototype.createPlayer = function(player) {
 		this.playersNumber++;
 		this.players[idPlayer] = player;
@@ -67,6 +75,7 @@ Game.prototype.getState = function() {
 }
 
 Game.prototype.updateState = function(data,id) {
+	
 	if(data.action == 'punch'){
 		if(((this.ball.x < this.players[id].x + punchRadius)&&(this.ball.x > this.players[id].x - punchRadius))
 			&&((this.ball.y < this.players[id].y + punchRadius)&&(this.ball.y > this.players[id].y - punchRadius)))
@@ -83,6 +92,9 @@ Game.prototype.updateState = function(data,id) {
 		console.log(this.players[id].x);
 		console.log(this.players[id].y);
 	}
+	
+	return new OutputData(id,this.players[id].x,this.players[id].y,data.action);
+	
 }
 
 
@@ -113,13 +125,13 @@ Client.prototype.onDisconnect = function() {
 }
 
 Client.prototype.onInput = function(data) {
-	game.updateState(data,this.player.id);
+	return game.updateState(data,this.player.id);
 }
 
-Client.prototype.update = function() {
+Client.prototype.update = function(outputData) {
 	this.counter++;
-	this.socket.emit('state', game.getState());
-	this.socket.broadcast.emit('state', game.getState());
+	this.socket.emit('state', outputData);
+	this.socket.broadcast.emit('state', outputData);
 }
 
 var clients = [];
@@ -136,8 +148,7 @@ io.sockets.on('connection', function (socket) {
 		client.onAuth(data);
 	});
 	socket.on('action', function (data) {
-		client.onInput(data);
-		client.update();
+		client.update(client.onInput(data));
 	});	
 	socket.on('disconnect', function () {
 		var index = clients.indexOf(client);
